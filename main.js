@@ -10,17 +10,16 @@ const main = async () => {
   const KEY = "jobs";
   await client.zAdd(KEY, {
     score: Date.now(),
-    value: JSON.stringify({ name: "test", params: [] }),
+    value: JSON.stringify({ name: "log", params: ["test"] }),
   });
   await client.zAdd(KEY, {
     score: Date.now(),
-    value: JSON.stringify({ name: "test33", params: [] }),
+    value: JSON.stringify({ name: "log", params: ["text-log"] }),
   });
 
-  // await client.set("test-persist", "test");
-  // console.log(await client.get("test-persist"));
   const { start, stop } = scheduler({
     path: path.resolve(__dirname, "./api.js"),
+    // batch: true,
   });
   await start();
 };
