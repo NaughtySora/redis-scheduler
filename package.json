@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "start": "node --watch main.js"
+  },
+  "dependencies": {
+    "naughty-util": "^0.4.2",
+    "redis": "^5.6.0"
+  }
+}
