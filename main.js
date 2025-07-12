@@ -21,19 +21,30 @@ const main = async () => {
 
   const { start, stop } = scheduler({
     path: path.resolve(__dirname, "./api.js"),
-    options: { key: "jobs" },
+    isolate: "thread",
+    options: { key: "jobs", interval: 1000 },
     // batch: true,
   });
   await start();
 
+  const timer = setTimeout(async () => {
+    const score = Date.now();
+    await client.zAdd(KEY, {
+      score,
+      value: JSON.stringify({ name: "log", params: [`log-${score}`] }),
+    });
+    timer.refresh();
+  }, 1000);
+
   const exit = async () => {
+    clearTimeout(timer);
     if (client.isOpen) await client.close();
     await stop();
   };
 
   process.on('SIGINT', async () => {
     await exit();
-    console.error("Grateful exit");
+    console.log("Grateful exit");
     process.exit(0);
   });
 
