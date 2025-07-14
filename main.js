@@ -9,21 +9,19 @@ const main = async () => {
   await client.connect();
   const KEY = "jobs";
 
-  await client.zAdd(KEY, {
-    score: Date.now(),
-    value: JSON.stringify({ name: "log", params: ["test"] }),
-  });
+  // await client.zAdd(KEY, {
+  //   score: Date.now(),
+  //   value: JSON.stringify({ name: "log", params: ["test"] }),
+  // });
 
-  await client.zAdd(KEY, {
-    score: Date.now(),
-    value: JSON.stringify({ name: "log", params: ["text-log"] }),
-  });
+  // await client.zAdd(KEY, {
+  //   score: Date.now(),
+  //   value: JSON.stringify({ name: "log", params: ["text-log"] }),
+  // });
 
   const { start, stop } = scheduler({
     path: path.resolve(__dirname, "./api.js"),
-    isolate: "thread",
     options: { key: "jobs", interval: 1000 },
-    // batch: true,
   });
   await start();
 
