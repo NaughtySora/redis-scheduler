@@ -13,7 +13,6 @@ const main = async () => {
   const { start, stop } = scheduler({
     path: path.resolve(__dirname, "./api.js"),
     options: { key: KEY, interval: 1000 },
-    isolate: "thread",
   });
 
   await start();
