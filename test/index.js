@@ -1,6 +1,6 @@
 "use strict";
 
-const scheduler = require("./lib/scheduler/index.js");
+const scheduler = require("../lib/index.js");
 const redis = require("redis");
 const path = require("node:path");
 
@@ -13,7 +13,7 @@ const main = async () => {
   const { start, stop } = scheduler({
     path: path.resolve(__dirname, "./api.js"),
     options: { key: KEY, interval: 1000 },
-    isolate: "thread",
+    isolate: "process",
   });
 
   await start();
