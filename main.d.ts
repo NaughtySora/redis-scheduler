@@ -11,7 +11,7 @@ interface MonitorOptions {
 
 interface SchedulerOptions {
   path: string;
-  clientOptions?: Parameters<typeof createClient>[0],
+  clientOptions?: Parameters<typeof createClient>[0];
   isolate?: Isolate;
   options?: MonitorOptions;
 }
