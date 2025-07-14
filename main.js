@@ -46,14 +46,3 @@ const main = async () => {
 };
 
 main();
-
-
-// await client.zAdd(KEY, {
-//   score: Date.now(),
-//   value: JSON.stringify({ name: "log", params: ["test"] }),
-// });
-
-// await client.zAdd(KEY, {
-//   score: Date.now(),
-//   value: JSON.stringify({ name: "log", params: ["text-log"] }),
-// });
