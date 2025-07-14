@@ -1,4 +1,31 @@
 {
+  "name": "redis-scheduler",
+  "version": "0.0.1",
+  "author": "NaughtySora <naughtysora@proton.me>",
+  "license": "MIT",
+  "description": "Node js scheduler",
+  "readMeFilename": "README.md",
+  "keywords": [
+    "nodejs",
+    "scheduler",
+    "job",
+    "cronjob",
+    "timeout",
+    "timer",
+    "interval"
+  ],
+  "files": [
+    "lib/",
+    "main.d.ts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NaughtySora/redis-scheduler.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NaughtySora/redis-scheduler/issues",
+    "email": "naughtysora@proton.me"
+  },
   "scripts": {
     "test": "node ./test/index.js"
   },
@@ -9,5 +36,6 @@
   "devDependencies": {
     "@types/redis": "^4.0.10"
   },
-  "types": "main.d.ts"
+  "types": "main.d.ts",
+  "main": "main.js"
 }
