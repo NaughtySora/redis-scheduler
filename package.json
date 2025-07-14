@@ -1,7 +1,6 @@
 {
   "scripts": {
-    "dev": "node --watch main.js",
-    "start": "node main.js"
+    "test": "node ./test/index.js"
   },
   "dependencies": {
     "naughty-util": "^0.4.2",

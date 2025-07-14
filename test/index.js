@@ -1,6 +1,6 @@
 "use strict";
 
-const scheduler = require("./lib/scheduler/index.js");
+const scheduler = require("../lib/index.js");
 const redis = require("redis");
 const path = require("node:path");
 
