@@ -15,3 +15,5 @@ interface Scheduler {
   isolate?: Isolate;
   options?: MonitorOptions;
 }
+
+export const scheduler: Scheduler;

@@ -4,27 +4,17 @@ const scheduler = require("./lib/scheduler/index.js");
 const redis = require("redis");
 const path = require("node:path");
 
+const KEY = "jobs";
+
 const main = async () => {
   const client = redis.createClient();
   await client.connect();
-  const KEY = "jobs";
-
-  await client.zAdd(KEY, {
-    score: Date.now(),
-    value: JSON.stringify({ name: "log", params: ["test"] }),
-  });
-
-  await client.zAdd(KEY, {
-    score: Date.now(),
-    value: JSON.stringify({ name: "log", params: ["text-log"] }),
-  });
 
   const { start, stop } = scheduler({
     path: path.resolve(__dirname, "./api.js"),
-    isolate: "thread",
-    options: { key: "jobs", interval: 1000 },
-    // batch: true,
+    options: { key: KEY, interval: 1000 },
   });
+
   await start();
 
   const timer = setTimeout(async () => {
@@ -56,3 +46,14 @@ const main = async () => {
 };
 
 main();
+
+
+// await client.zAdd(KEY, {
+//   score: Date.now(),
+//   value: JSON.stringify({ name: "log", params: ["test"] }),
+// });
+
+// await client.zAdd(KEY, {
+//   score: Date.now(),
+//   value: JSON.stringify({ name: "log", params: ["text-log"] }),
+// });
