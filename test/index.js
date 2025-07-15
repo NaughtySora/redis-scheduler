@@ -13,7 +13,7 @@ const main = async () => {
   const { start, stop } = scheduler({
     path: path.resolve(__dirname, "./api.js"),
     options: { key: KEY, interval: 1000 },
-    
+    isolate: "process",
   });
 
   await start();
@@ -34,9 +34,14 @@ const main = async () => {
   };
 
   process.on('SIGINT', async () => {
-    await exit();
-    console.log("Grateful exit");
-    process.exit(0);
+    try {
+      await exit();
+      console.log("Grateful exit");
+      process.exit(0);
+    } catch {
+      console.error("Error while exiting");
+      process.exit(1);
+    }
   });
 
   process.on("uncaughtException", async (error) => {

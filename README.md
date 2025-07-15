@@ -20,7 +20,7 @@
 
 `interface SchedulerApi {`\
 `  start(): Promise<void>;`\
-`  stop(): Promise<void>;`\
+`  stop(ms?: number): Promise<void>;`\
 `}`
 
 `type Scheduler = (options: SchedulerOptions) => SchedulerApi;`
@@ -55,4 +55,7 @@
   });
   timer.refresh();
   }, 1000);
+
+  // optional parameters ms decides how long to wait for stopping
+  await stop().catch(console.error) // can throw error if stopping process frozen/jammed
 ```

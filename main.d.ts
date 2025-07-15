@@ -18,7 +18,7 @@ interface SchedulerOptions {
 
 interface SchedulerApi {
   start(): Promise<void>;
-  stop(): Promise<void>;
+  stop(ms?: number): Promise<void>;
 }
 
 type Scheduler = (options: SchedulerOptions) => SchedulerApi;
