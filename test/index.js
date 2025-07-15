@@ -34,9 +34,14 @@ const main = async () => {
   };
 
   process.on('SIGINT', async () => {
-    await exit();
-    console.log("Grateful exit");
-    process.exit(0);
+    try {
+      await exit();
+      console.log("Grateful exit");
+      process.exit(0);
+    } catch {
+      console.error("Error while exiting");
+      process.exit(1);
+    }
   });
 
   process.on("uncaughtException", async (error) => {
