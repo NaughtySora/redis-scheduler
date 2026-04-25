@@ -5,6 +5,8 @@
   "license": "MIT",
   "description": "Node js scheduler",
   "readMeFilename": "README.md",
+  "exports": "./main.js",
+  "types": "main.d.ts",
   "keywords": [
     "nodejs",
     "scheduler",
@@ -27,7 +29,9 @@
     "email": "naughtysora@proton.me"
   },
   "scripts": {
-    "test": "node ./test/index.js"
+    "test": "node ./test/index.js",
+    "docker:up": "docker-compose up",
+    "docker:down": "docker-compose down"
   },
   "dependencies": {
     "naughty-util": "^0.6.3",
@@ -36,8 +40,7 @@
   "devDependencies": {
     "@types/node": "^25.6.0",
     "@types/redis": "^4.0.11",
+    "c8": "^11.0.0",
     "typescript": "^6.0.3"
-  },
-  "types": "main.d.ts",
-  "main": "main.js"
+  }
 }
