@@ -8,5 +8,8 @@ const approach = abstract.factorify({
   thread: resolve(__dirname, "./lib/thread.js"),
 }, resolve(__dirname, "./lib/scheduler.js"));
 
-module.exports = (parameters = {}) =>
-  require(approach(parameters.isolate))(parameters);
+module.exports = {
+  scheduler: (options = {}) =>
+    require(approach(options.isolate))(options),
+};
+

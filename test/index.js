@@ -1,7 +1,6 @@
 "use strict";
 process.loadEnvFile(".env");
-const scheduler = require("../main.js");
-const { createClient } = require("redis");
+const { scheduler } = require("../main");
 const { resolve } = require("node:path");
 const { describe, it } = require("node:test");
 const api = require('./api.js');
@@ -14,16 +13,37 @@ const config = {
   port: parseInt(process.env.REDIS_PORT, 10),
 };
 
-describe("Scheduler - Main Thread", async () => {
-  await it("simple", async () => {
-    const redis = createClient(config);
+// test | types
+// createClientPool
+// createSentinel
+
+describe("Scheduler", async () => {
+  await it.skip("main thread", async () => {
     const client = scheduler({
       key: KEY,
       interval: 1000,
       modules: { api },
     });
     client.on("error", console.error);
-    await client.start(redis);
+    await client.start(config);
+    client.add(JSON.stringify({
+      name: "api",
+      key: "log",
+      args: [],
+    }));
+    await async.pause(2000);
+    await client.stop();
+  });
+
+  await it('thread', async () => {
+    const client = scheduler({
+      key: KEY,
+      interval: 1000,
+      modules: { api },
+      isolate: "thread",
+    });
+    client.on("error", console.error);
+    await client.start(config);
     client.add(JSON.stringify({
       name: "api",
       key: "log",

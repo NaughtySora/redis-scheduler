@@ -1,26 +1,21 @@
 
 import { createClient } from "redis";
+import { EventEmitter } from "node:events";
 
-type Isolate = "process" | "thread";
-
-interface MonitorOptions {
+interface Options {
+  isolate?: "process" | "thread";
   interval?: number;
   batch?: boolean;
   key?: string;
 }
 
-interface SchedulerOptions {
-  path: string;
-  clientOptions?: Parameters<typeof createClient>[0];
-  isolate?: Isolate;
-  options?: MonitorOptions;
-}
-
-interface SchedulerApi {
-  start(): Promise<void>;
+declare class Scheduler extends EventEmitter {
+  constructor(options: Options);
+  start(config: Parameters<typeof createClient>[0]): Promise<void>;
   stop(ms?: number): Promise<void>;
+  add(value: string | Buffer<ArrayBuffer>, score?: number): Promise<number>;
+  status: number;
+  static create(options: Options): Scheduler;
 }
 
-type Scheduler = (options: SchedulerOptions) => SchedulerApi;
-
-export const scheduler: Scheduler;
+export function scheduler(param: Options): Scheduler;
