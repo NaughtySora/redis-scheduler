@@ -33,20 +33,3 @@ describe("Scheduler - Main Thread", async () => {
     await client.stop();
   });
 });
-
-
-// process.on('SIGINT', async () => {
-//   try {
-//     await client.stop();
-//     console.log("Grateful exit");
-//     process.exit(0);
-//   } catch (e) {
-//     console.error("Error while exiting", e);
-//     process.exit(1);
-//   }
-// });
-// process.on("uncaughtException", async (error) => {
-//   await exit();
-//   console.error("Application closed with", error);
-//   process.exit(1);
-// });
