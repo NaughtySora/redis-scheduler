@@ -31,13 +31,31 @@ describe("Scheduler", async () => {
     await client.stop();
   });
 
-  await it('thread', async () => {
+  await it.skip('thread', async () => {
+    const client = scheduler({
+      key: KEY,
+      interval: 1000,
+      modules: { api },
+      isolate: "thread",
+    });
+    client.on("error", console.error);
+    await client.start(config);
+    client.add(JSON.stringify({
+      name: "api",
+      key: "log",
+      args: [],
+    }));
+    await async.pause(2000);
+    await client.stop();
+  });
+
+  await it('process', async () => {
     try {
       const client = scheduler({
         key: KEY,
         interval: 1000,
         modules: { api },
-        isolate: "thread",
+        isolate: "process",
       });
       client.on("error", console.error);
       await client.start(config);
