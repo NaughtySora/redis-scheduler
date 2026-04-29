@@ -1,7 +1,7 @@
 # Redis Scheduler
-Should server as an example more than production version,
-for production consider using sql database transaction
-with locking and inbox patter.
+Server purpose of as example only.  
+
+For production especially for multi-instance applications consider using SQL database with locks and inbox pattern.
 
 
 ```js
