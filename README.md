@@ -1,5 +1,5 @@
 # Redis Scheduler
-Server purpose of as example only.  
+Prototype / example only  
 
 For production especially for multi-instance applications consider using SQL database with locks and inbox pattern.
 
