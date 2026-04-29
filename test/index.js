@@ -14,7 +14,7 @@ const config = {
 };
 
 describe("Scheduler", async () => {
-  await it.skip("main thread", async () => {
+  await it("main thread", async () => {
     const client = scheduler({
       key: KEY,
       interval: 1000,
@@ -31,7 +31,7 @@ describe("Scheduler", async () => {
     await client.stop();
   });
 
-  await it.skip('thread', async () => {
+  await it('thread', async () => {
     const client = scheduler({
       key: KEY,
       interval: 1000,
