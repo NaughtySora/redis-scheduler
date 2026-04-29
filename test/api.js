@@ -1,9 +1,7 @@
 "use strict";
 
 module.exports = {
-  async log(text) {
-    console.log("---start---");
-    console.log(text);
-    console.log("---end---\n");
+  async log(...params) {
+    console.log("job", params);
   },
 };

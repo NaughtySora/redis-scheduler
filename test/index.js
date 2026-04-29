@@ -1,54 +1,73 @@
 "use strict";
-
-const scheduler = require("../lib/index.js");
-const redis = require("redis");
-const path = require("node:path");
+process.loadEnvFile(".env");
+const { scheduler } = require("../main");
+const { resolve } = require("node:path");
+const { describe, it } = require("node:test");
+const api = require('./api.js');
+const { async } = require("naughty-util");
 
 const KEY = "jobs";
 
-const main = async () => {
-  const client = redis.createClient();
-  await client.connect();
-
-  const { start, stop } = scheduler({
-    path: path.resolve(__dirname, "./api.js"),
-    options: { key: KEY, interval: 1000 },
-    isolate: "process",
-  });
-
-  await start();
-
-  const timer = setTimeout(async () => {
-    const score = Date.now();
-    await client.zAdd(KEY, {
-      score,
-      value: JSON.stringify({ name: "log", params: [`log-${score}`] }),
-    });
-    timer.refresh();
-  }, 1000);
-
-  const exit = async () => {
-    clearTimeout(timer);
-    if (client.isOpen) await client.close();
-    await stop();
-  };
-
-  process.on('SIGINT', async () => {
-    try {
-      await exit();
-      console.log("Grateful exit");
-      process.exit(0);
-    } catch {
-      console.error("Error while exiting");
-      process.exit(1);
-    }
-  });
-
-  process.on("uncaughtException", async (error) => {
-    await exit();
-    console.error("Application closed with", error);
-    process.exit(1);
-  });
+const config = {
+  password: process.env.REDIS_PASSWORD,
+  port: parseInt(process.env.REDIS_PORT, 10),
 };
 
-main();
+describe("Scheduler", async () => {
+  await it("main thread", async () => {
+    const client = scheduler({
+      key: KEY,
+      interval: 1000,
+      modules: { api },
+    });
+    client.on("error", console.error);
+    await client.start(config);
+    client.add(JSON.stringify({
+      name: "api",
+      key: "log",
+      args: [],
+    }));
+    await async.pause(2000);
+    await client.stop();
+  });
+
+  await it('thread', async () => {
+    const client = scheduler({
+      key: KEY,
+      interval: 1000,
+      modules: { api },
+      isolate: "thread",
+    });
+    client.on("error", console.error);
+    await client.start(config);
+    client.add(JSON.stringify({
+      name: "api",
+      key: "log",
+      args: [],
+    }));
+    await async.pause(2000);
+    await client.stop();
+  });
+
+  await it('process', async () => {
+    try {
+      const client = scheduler({
+        key: KEY,
+        interval: 1000,
+        modules: { api },
+        isolate: "process",
+      });
+      client.on("error", console.error);
+      await client.start(config);
+      client.add(JSON.stringify({
+        name: "api",
+        key: "log",
+        args: [],
+      }));
+      await async.pause(2000);
+      await client.stop();
+    } catch (e) {
+      console.error(e);
+    }
+  });
+});
